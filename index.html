@@ -31,13 +31,43 @@
         <br>
         <input id="Decimal" type="text" value="0" onkeyup="Dec2Bin()" style="width: 98%;">
     </div>
+    <div style="display: none;" id="ErroBin">
+        <p>
+            ERRO! Você só pode digitar 0 ou 1 no BINÁRIO!
+        </p>
+    </div>
+    <div style="display: none;" id="ErroDec">
+        <p>
+            ERRO! Você só pode digitar NÚMEROS no DECIMAL!
+        </p>
+    </div>
     <div class="propaganda">
         Propaganda
     </div>
     <script>
         binario = 0
         decimal = 0
+        function verificaBinario(){
+            document.getElementById('ErroDec').style.display = 'none'
+            var txt = String(document.getElementById('Binario').value)
+            var no0or1digit = false
+            var aux = ''
+            for (var i=txt.length-1; i>=0; i--){
+                if((txt[i]!='0') && (txt[i]!='1')){
+                    no0or1digit = true
+                }else{
+                    aux = txt[i] + aux
+                }
+            }
+            if(no0or1digit==true){
+                document.getElementById('Binario').value = aux
+                document.getElementById('ErroBin').style.display = ''
+            }else{
+                document.getElementById('ErroBin').style.display = 'none'
+            }
+        }
         function Bin2Dec(){
+                verificaBinario()
                 binario = Number.parseInt(document.getElementById('Binario').value)
                 decimal = 0
                 cont = 0
@@ -49,7 +79,29 @@
                 }
                 document.getElementById('Decimal').value = decimal
         }
+        function verificaDecimal(){
+            document.getElementById('ErroBin').style.display = 'none'
+            var txt = String(document.getElementById('Decimal').value)
+            var noNumberDigit = false
+            var aux = ''
+            for (var i=txt.length-1; i>=0; i--){
+                if((txt[i]!='0') && (txt[i]!='1') && (txt[i]!='2') && (txt[i]!='3')
+                        && (txt[i]!='4') && (txt[i]!='5') && (txt[i]!='6') && (txt[i]!='7')
+                        && (txt[i]!='8') && (txt[i]!='9')){
+                    noNumberDigit = true
+                }else{
+                    aux = txt[i] + aux
+                }
+            }
+            if(noNumberDigit==true){
+                document.getElementById('Decimal').value = aux
+                document.getElementById('ErroDec').style.display = ''
+            }else{
+                document.getElementById('ErroDec').style.display = 'none'
+            }
+        }
         function Dec2Bin(){
+            verificaDecimal()
             decimal = document.getElementById('Decimal').value
             binario = ""
             while (decimal>0){
