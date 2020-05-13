@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bin2Dec</title>
+    <style>
+        body {
+            margin-right: 5%;
+            margin-left: 5%;
+            margin-top: 3%;
+            margin-bottom: 0%;
+        }
+        .propaganda {
+            margin-top: 20px;
+            border-style: solid;
+            border-color: blue;
+            text-align: center;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        Binário
+        <br>
+        <input id="Binario" type="text" value="0" onkeyup="Bin2Dec()" style="width: 98%;">
+    </div>
+    <div>
+        Decimal
+        <br>
+        <input id="Decimal" type="text" value="0" onkeyup="Dec2Bin()" style="width: 98%;">
+    </div>
+    <div class="propaganda">
+        Propaganda
+    </div>
+    <script>
+        binario = 0
+        decimal = 0
+        function Bin2Dec(){
+                binario = Number.parseInt(document.getElementById('Binario').value)
+                decimal = 0
+                cont = 0
+                while(binario>0){
+                    resto = binario % 10
+                    decimal += resto * 2 ** cont
+                    binario = Number.parseInt(binario/10)
+                    cont++
+                }
+                document.getElementById('Decimal').value = decimal
+        }
+        function Dec2Bin(){
+            decimal = document.getElementById('Decimal').value
+            binario = ""
+            while (decimal>0){
+                binario = String(decimal%2) + binario
+                decimal = Number.parseInt(decimal/2)
+            }
+            if(binario == ""){
+                binario = '0'
+            }
+            document.getElementById('Binario').value = binario
+        }
+    </script>
+</body>
+</html>
