@@ -1,0 +1,62 @@
+body {
+  background: #0C2939;
+  color: white;
+  height: 100vh;
+  min-height: 300px;
+  min-width: 165px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+b {
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+input{
+  width: 90%;
+  max-width: 440px;
+  min-width: 150px;
+}
+
+.corpo{
+  width: 90vw;
+  text-align: center;
+}
+
+.error{
+  display: none;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.error p{
+  text-align: center;
+  color: red;
+  background-color: yellow;
+  max-width: 90vw;
+  min-width: 165px;
+  padding: 5px 5px 5px 5px;
+  border-radius: 8px;
+  border-width: 2px;
+  border-color: red;
+  border-style: solid;
+}
+
+.propaganda {
+  margin-top: 20px;
+  border-style: solid;
+  border-color: blue;
+  text-align: center;
+  height: 7 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.propaganda p {
+  height: 20px;
+}

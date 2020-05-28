@@ -3,73 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bin2Dec</title>
-    <style>
-        body {
-            margin-right: 5%;
-            margin-left: 5%;
-            margin-top: 3%;
-            margin-bottom: 0%;
-        }
-        .propaganda {
-            margin-top: 20px;
-            border-style: solid;
-            border-color: blue;
-            text-align: center;
-            height: 50px;
-        }
-    </style>
+    <link href="index.css" rel="stylesheet">
+    <title>Conversor Binário/Decimal e Decimal/Binário</title>
 </head>
 <body>
-    <div>
-        Binário
+    <div class='corpo'>
+        <div>
+            <div>
+                <b>Binário</b>
+                <br>
+                <input id="Binario" type="text" value="0" onkeyup="Bin2Dec()">
+            </div>
+        </div>
+        <div class='error' id="ErroBin">
+            <p>
+                ERRO! Você só pode digitar '-', '+', '0' ou '1' no BINÁRIO!
+            </p>
+        </div>
+        <div class='error' id="ErroTamBin+53">
+            <p>
+                ERRO! O quantidade de algarismos no binario não pode exeder 53 digitos (não contando o sinal)!
+            </p>
+        </div>
         <br>
-        <input id="Binario" type="text" value="0" onkeyup="Bin2Dec()" style="width: 98%;">
-    </div>
-    <div>
-        Decimal
+        <div>
+            <div>
+                <b>Decimal</b>
+                <br>
+                <input id="Decimal" type="text" value="0" onkeyup="Dec2Bin()">
+            </div>
+        </div>
+        <div class='error' id="ErroDec">
+            <p>
+                ERRO! Você só pode digitar NÚMEROS INTEIROS no DECIMAL!
+            </p>
+        </div>
+        <div class='error' id="ErroTamDecGrande">
+            <p>
+                ERRO! O maior número que pode ser digitado é 9007199254740991!
+            </p>
+        </div>
+        <div class='error' id="ErroTamDecPequeno">
+            <p>
+                ERRO! O menor número que pode ser digitado é -9007199254740991!
+            </p>
+        </div>
+        <!--
         <br>
-        <input id="Decimal" type="text" value="0" onkeyup="Dec2Bin()" style="width: 98%;">
-    </div>
-    <div style="display: none;" id="ErroBin">
-        <p>
-            ERRO! Você só pode digitar 0 ou 1 no BINÁRIO!
-        </p>
-    </div>
-    <div style="display: none;" id="ErroDec">
-        <p>
-            ERRO! Você só pode digitar NÚMEROS no DECIMAL!
-        </p>
-    </div>
-    <div class="propaganda">
-        Propaganda
+        <div class="propaganda">
+            <p>Propaganda</p>
+        </div>
+        -->
     </div>
     <script>
-        binario = 0
-        decimal = 0
-        function verificaBinario(){
+        function desativaErros(){
+            document.getElementById('ErroBin').style.display = 'none'
             document.getElementById('ErroDec').style.display = 'none'
+            document.getElementById('ErroTamDecGrande').style.display = 'none'
+            document.getElementById('ErroTamDecPequeno').style.display = 'none'
+            document.getElementById('ErroTamBin+53').style.display = 'none'
+
+        }
+        function verificaBinario(){
             var txt = String(document.getElementById('Binario').value)
-            var no0or1digit = false
+            var noBinardigit = false
             var aux = ''
             for (var i=txt.length-1; i>=0; i--){
                 if((txt[i]!='0') && (txt[i]!='1')){
-                    no0or1digit = true
+                    if (((txt[i]=='-') || (txt[i]=='+')) && i==0){
+                        aux = txt[i] + aux
+                    }else{
+                        noBinardigit = true
+                    }
                 }else{
                     aux = txt[i] + aux
                 }
             }
-            if(no0or1digit==true){
+            if(noBinardigit==true){
                 document.getElementById('Binario').value = aux
-                document.getElementById('ErroBin').style.display = ''
+                document.getElementById('ErroBin').style.display = 'flex'
             }else{
                 document.getElementById('ErroBin').style.display = 'none'
             }
         }
+        function verificaTamanhoBinario(){
+            if(String(document.getElementById('Binario').value).length>53){
+                if (String(document.getElementById('Binario').value)[0]=='-' ||
+                String(document.getElementById('Binario').value)[0]=='+'){
+                    document.getElementById('Binario').value = String(document.getElementById('Binario').value).substring(0, 54)
+                }else{
+                    document.getElementById('Binario').value = String(document.getElementById('Binario').value).substring(0, 53)
+                }
+                document.getElementById('ErroTamBin+53').style.display = 'flex'
+            }
+        }
         function Bin2Dec(){
+                desativaErros()
                 verificaBinario()
-                binario = Number.parseInt(document.getElementById('Binario').value)
+                verificaTamanhoBinario()
+                positive = true
+                binario = String(document.getElementById('Binario').value)
+                if(binario[0]=='-'){
+                    binario = binario.substring(1, binario.length)
+                    positive = false
+                }else{
+                    if(binario[0]=='-'){
+                    binario = binario.substring(1, binario.length)
+                    positive = true
+                }
+                }
                 decimal = 0
+                for (var i=0; i<binario.length; i++){
+                    decimal += Number(binario[i]) * 2**i
+                }
+                //decimal = parseInt(binario, 2);
+                /*
                 cont = 0
                 while(binario>0){
                     resto = binario % 10
@@ -77,33 +125,55 @@
                     binario = Number.parseInt(binario/10)
                     cont++
                 }
+                */
                 document.getElementById('Decimal').value = decimal
         }
         function verificaDecimal(){
-            document.getElementById('ErroBin').style.display = 'none'
             var txt = String(document.getElementById('Decimal').value)
             var noNumberDigit = false
             var aux = ''
-            for (var i=txt.length-1; i>=0; i--){
+            for (var i=0; i<txt.length; i++){
                 if((txt[i]!='0') && (txt[i]!='1') && (txt[i]!='2') && (txt[i]!='3')
                         && (txt[i]!='4') && (txt[i]!='5') && (txt[i]!='6') && (txt[i]!='7')
                         && (txt[i]!='8') && (txt[i]!='9')){
-                    noNumberDigit = true
+                    if (((txt[i]=='-') || (txt[i]=='+')) && i==0){
+                        aux += txt[i]
+                    }else{
+                        noNumberDigit = true
+                    }
                 }else{
-                    aux = txt[i] + aux
+                    aux += txt[i]
                 }
             }
             if(noNumberDigit==true){
                 document.getElementById('Decimal').value = aux
-                document.getElementById('ErroDec').style.display = ''
+                document.getElementById('ErroDec').style.display = 'flex'
             }else{
                 document.getElementById('ErroDec').style.display = 'none'
             }
         }
+        function verificaTamanhoDecimal(){
+            if (Number(document.getElementById('Decimal').value)>Number.MAX_SAFE_INTEGER){
+                decimal = document.getElementById('Decimal').value
+                document.getElementById('Decimal').value = decimal.substring(0,(decimal.length - 1))
+                document.getElementById('ErroTamDecGrande').style.display = 'flex'
+                verificaTamanhoDecimal()
+            }
+            if (Number(document.getElementById('Decimal').value)<Number.MIN_SAFE_INTEGER){
+                decimal = document.getElementById('Decimal').value
+                document.getElementById('Decimal').value = decimal.substring(0,(decimal.length - 1))
+                document.getElementById('ErroTamDecPequeno').style.display = 'flex'
+                verificaTamanhoDecimal()
+            }
+            
+        }
         function Dec2Bin(){
+            desativaErros()
             verificaDecimal()
-            decimal = document.getElementById('Decimal').value
-            binario = ""
+            verificaTamanhoDecimal()
+            decimal = Number(document.getElementById('Decimal').value)
+            binario = decimal.toString(2);
+            /*
             while (decimal>0){
                 binario = String(decimal%2) + binario
                 decimal = Number.parseInt(decimal/2)
@@ -111,6 +181,7 @@
             if(binario == ""){
                 binario = '0'
             }
+            */
             document.getElementById('Binario').value = binario
         }
     </script>
