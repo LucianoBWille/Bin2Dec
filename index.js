@@ -1,9 +1,12 @@
 function desativaErros(){
     document.getElementById('ErroBin').style.display = 'none'
-    document.getElementById('ErroDec').style.display = 'none'
-    document.getElementById('ErroTamDecGrande').style.display = 'none'
-    document.getElementById('ErroTamDecPequeno').style.display = 'none'
     document.getElementById('ErroTamBin+53').style.display = 'none'
+    document.getElementById('ErroDecDecimalSemSinal').style.display = 'none'
+    document.getElementById('ErroTamDecGrandeDecimalSemSinal').style.display = 'none'
+    document.getElementById('ErroTamDecPequenoDecimalSemSinal').style.display = 'none'
+    document.getElementById('ErroDecDecimalComSinal').style.display = 'none'
+    document.getElementById('ErroTamDecGrandeDecimalComSinal').style.display = 'none'
+    document.getElementById('ErroTamDecPequenoDecimalComSinal').style.display = 'none'
 
 }
 function verificaBinario(){
@@ -12,11 +15,7 @@ function verificaBinario(){
     var aux = ''
     for (var i=txt.length-1; i>=0; i--){
         if((txt[i]!='0') && (txt[i]!='1')){
-            if (((txt[i]=='-') || (txt[i]=='+')) && i==0){
-                aux = txt[i] + aux
-            }else{
-                noBinardigit = true
-            }
+            noBinardigit = true
         }else{
             aux = txt[i] + aux
         }
@@ -39,24 +38,33 @@ function verificaTamanhoBinario(){
         document.getElementById('ErroTamBin+53').style.display = 'flex'
     }
 }
-function Bin2Dec(){
-        desativaErros()
-        verificaBinario()
-        verificaTamanhoBinario()
+function Bin2Dec(id){
+        if(id==''){
+            desativaErros()
+            verificaBinario()
+            verificaTamanhoBinario()
+        }
         positive = true
         binario = String(document.getElementById('Binario').value)
-        if(binario[0]=='-'){
-            binario = binario.substring(1, binario.length)
-            positive = false
-        }else{
-            if(binario[0]=='-'){
-            binario = binario.substring(1, binario.length)
-            positive = true
-        }
-        }
-        decimal = 0
+        decimalSemSinal = 0
+        decimalComSinal = 0
         for (var i=0; i<binario.length; i++){
-            decimal += Number(binario[binario.length-1-i]) * 2**i
+            decimalSemSinal += Number(binario[binario.length-1-i]) * 2**i
+        }
+        if (binario[0]=='0'){
+            decimalComSinal = decimalSemSinal
+        }else{
+            binarioInvertido = ''
+            for (var i=0; i<binario.length; i++){ //inverte o binário
+                if(binario[i]=='1'){
+                    binarioInvertido += '0'
+                }else{
+                    binarioInvertido += '1'
+                }
+            }
+            aux = parseInt(binarioInvertido, 2)
+            aux +=1
+            decimalComSinal = aux*(-1)
         }
         //decimal = parseInt(binario, 2);
         /*
@@ -68,10 +76,21 @@ function Bin2Dec(){
             cont++
         }
         */
-        document.getElementById('Decimal').value = decimal
+        if (id==''){
+            document.getElementById('DecimalSemSinal').value = decimalSemSinal
+            document.getElementById('DecimalComSinal').value = decimalComSinal
+        }else{
+            if (id=='DecimalComSinal'){
+                document.getElementById('DecimalSemSinal').value = decimalSemSinal
+            }else{
+                if (id=='DecimalSemSinal'){
+                    document.getElementById('DecimalComSinal').value = decimalComSinal
+                }
+            }
+        }
 }
-function verificaDecimal(){
-    var txt = String(document.getElementById('Decimal').value)
+function verificaDecimal(id){
+    var txt = String(document.getElementById(id).value)
     var noNumberDigit = false
     var aux = ''
     for (var i=0; i<txt.length; i++){
@@ -88,33 +107,47 @@ function verificaDecimal(){
         }
     }
     if(noNumberDigit==true){
-        document.getElementById('Decimal').value = aux
-        document.getElementById('ErroDec').style.display = 'flex'
+        document.getElementById(id).value = aux;
+        document.getElementById('ErroDec'+id).style.display = 'flex'
     }else{
-        document.getElementById('ErroDec').style.display = 'none'
+        document.getElementById('ErroDec'+id).style.display = 'none'
     }
 }
-function verificaTamanhoDecimal(){
-    if (Number(document.getElementById('Decimal').value)>Number.MAX_SAFE_INTEGER){
-        decimal = document.getElementById('Decimal').value
-        document.getElementById('Decimal').value = decimal.substring(0,(decimal.length - 1))
-        document.getElementById('ErroTamDecGrande').style.display = 'flex'
+function verificaTamanhoDecimal(id){
+    if (Number(document.getElementById(id).value)>Number.MAX_SAFE_INTEGER){
+        decimal = document.getElementById(id).value
+        document.getElementById(id).value = decimal.substring(0,(decimal.length - 1))
+        document.getElementById('ErroTamDecGrande'+id).style.display = 'flex'
         verificaTamanhoDecimal()
     }
-    if (Number(document.getElementById('Decimal').value)<Number.MIN_SAFE_INTEGER){
-        decimal = document.getElementById('Decimal').value
-        document.getElementById('Decimal').value = decimal.substring(0,(decimal.length - 1))
-        document.getElementById('ErroTamDecPequeno').style.display = 'flex'
+    if (Number(document.getElementById(id).value)<Number.MIN_SAFE_INTEGER){
+        decimal = document.getElementById(id).value
+        document.getElementById(id).value = decimal.substring(0,(decimal.length - 1))
+        document.getElementById('ErroTamDecPequeno'+id).style.display = 'flex'
         verificaTamanhoDecimal()
     }
-    
 }
-function Dec2Bin(){
+function Dec2Bin(id){
     desativaErros()
-    verificaDecimal()
-    verificaTamanhoDecimal()
-    decimal = Number(document.getElementById('Decimal').value)
-    binario = decimal.toString(2);
+    verificaDecimal(id)
+    verificaTamanhoDecimal(id)
+    decimal = Number(document.getElementById(id).value)
+    if (decimal>=0){
+        binario = '0' + decimal.toString(2);
+    }else{
+        decimal *= -1
+        decimal -= 1
+        aux = decimal.toString(2);
+        aux = '0'*5 + aux
+        binario = ''
+        for (var i=0; i<aux.length; i++){
+            if (aux[i]=='1'){
+                binario += '0'
+            }else{
+                binario += '1'
+            }
+        }
+    }
     /*
     while (decimal>0){
         binario = String(decimal%2) + binario
@@ -125,4 +158,5 @@ function Dec2Bin(){
     }
     */
     document.getElementById('Binario').value = binario
+    Bin2Dec(id)
 }

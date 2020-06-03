@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,38 +13,63 @@
                 <div>
                     <b>Binário</b>
                     <br>
-                    <input id="Binario" type="text" value="0" onkeyup="Bin2Dec()">
+                    <input id="Binario" type="text" value="0" onkeyup="Bin2Dec('')">
                 </div>
             </div>
             <div class='error' id="ErroBin">
                 <p>
-                    ERRO! Você só pode digitar '-', '+', '0' ou '1' no BINÁRIO!
+                    ERRO! Você só pode digitar '0' ou '1' no BINÁRIO!
                 </p>
             </div>
             <div class='error' id="ErroTamBin+53">
                 <p>
-                    ERRO! O quantidade de algarismos no binario não pode exeder 53 digitos (não contando o sinal)!
+                    ERRO! O quantidade de algarismos no binario não pode exeder 53 digitos!
                 </p>
             </div>
+
             <br>
             <div>
                 <div>
-                    <b>Decimal</b>
+                    <b>Decimal sem sinal</b>
                     <br>
-                    <input id="Decimal" type="text" value="0" onkeyup="Dec2Bin()">
+                    <input id="DecimalSemSinal" type="text" value="0" onkeyup="Dec2Bin('DecimalSemSinal')">
                 </div>
             </div>
-            <div class='error' id="ErroDec">
+            <div class='error' id="ErroDecDecimalSemSinal">
                 <p>
                     ERRO! Você só pode digitar NÚMEROS INTEIROS no DECIMAL!
                 </p>
             </div>
-            <div class='error' id="ErroTamDecGrande">
+            <div class='error' id="ErroTamDecGrandeDecimalSemSinal">
                 <p>
                     ERRO! O maior número que pode ser digitado é 9007199254740991!
                 </p>
             </div>
-            <div class='error' id="ErroTamDecPequeno">
+            <div class='error' id="ErroTamDecPequenoDecimalSemSinal">
+                <p>
+                    ERRO! O menor número que pode ser digitado é -9007199254740991!
+                </p>
+            </div>
+
+            <br>
+            <div>
+                <div>
+                    <b>Decimal com sinal</b>
+                    <br>
+                    <input id="DecimalComSinal" type="text" value="0" onkeyup="Dec2Bin('DecimalComSinal')">
+                </div>
+            </div>
+            <div class='error' id="ErroDecDecimalComSinal">
+                <p>
+                    ERRO! Você só pode digitar NÚMEROS INTEIROS no DECIMAL!
+                </p>
+            </div>
+            <div class='error' id="ErroTamDecGrandeDecimalComSinal">
+                <p>
+                    ERRO! O maior número que pode ser digitado é 9007199254740991!
+                </p>
+            </div>
+            <div class='error' id="ErroTamDecPequenoDecimalComSinal">
                 <p>
                     ERRO! O menor número que pode ser digitado é -9007199254740991!
                 </p>
