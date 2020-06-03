@@ -2,7 +2,7 @@
 Conversor de binário para decimal feito em Javascript, HTML5 e CSS3
 
 <b>O conversor rodando pode ser acessado
-<a href='luciano'>aqui</a>.</b>
+<a href='https://lucianobwille.github.io/Bin2Dec/'>aqui</a>.</b>
 
 <h2>Funcionalidades</h2>
 
