@@ -5,7 +5,7 @@ body {
 body{
   background: #0C2939;
   color: white;
-  height: 90vh;
+  height: 80vh;
   min-height: 200px;
   min-width: 165px;
   display: flex;
@@ -15,7 +15,7 @@ body{
 }
 
 b {
-  font-size: 20px;
+  font-size: 4vh;
   text-transform: uppercase;
 }
 
@@ -23,6 +23,7 @@ input{
   width: 90%;
   max-width: 440px;
   min-width: 150px;
+  font-size: 3vh;
 }
 
 .corpo{
