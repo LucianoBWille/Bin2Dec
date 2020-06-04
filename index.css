@@ -15,7 +15,7 @@ body{
 }
 
 b {
-  font-size: 4vh;
+  font-size: 15px;
   text-transform: uppercase;
 }
 
@@ -23,7 +23,7 @@ input{
   width: 90%;
   max-width: 440px;
   min-width: 150px;
-  font-size: 3vh;
+  font-size: 12px;
 }
 
 .corpo{
